@@ -1,0 +1,5 @@
+package com.squeed.chromequiz.channel;
+
+public enum EventDef {
+	EVENT_QUESTION, EVENT_ANSWER, EVENT_GAME_STARTED, EVENT_GAME_FINISHED, EVENT_GAME_MASTER_TRUE, EVENT_GAME_MASTER_FALSE;
+}
