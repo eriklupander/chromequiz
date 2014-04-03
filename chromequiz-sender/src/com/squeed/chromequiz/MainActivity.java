@@ -14,6 +14,10 @@ import android.support.v7.media.MediaRouter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -27,6 +31,9 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squeed.chromequiz.channel.ChromeQuizChannel;
 import com.squeed.chromequiz.channel.Command;
+import com.squeed.chromequiz.channel.EventFactory;
+import com.squeed.chromequiz.channel.Message;
+import com.squeed.chromequiz.model.Question;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -57,8 +64,45 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		initMediaRouter();
+		initAnswerButtons();
 	}
 	
+	private void initAnswerButtons() {
+		Button button1 = (Button) findViewById(R.id.answer1);
+		button1.setOnClickListener(buildAnswerButtonClickListener("A"));
+		
+		Button button2 = (Button) findViewById(R.id.answer2);
+		button2.setOnClickListener(buildAnswerButtonClickListener("B"));
+		
+		Button button3 = (Button) findViewById(R.id.answer3);
+		button3.setOnClickListener(buildAnswerButtonClickListener("C"));
+		
+		Button answerButton1 = (Button) findViewById(R.id.buttonA);
+		Button answerButton2 = (Button) findViewById(R.id.buttonB);
+		Button answerButton3 = (Button) findViewById(R.id.buttonC);
+		
+		answerButton1.setEnabled(false);
+		answerButton2.setEnabled(false);
+		answerButton3.setEnabled(false);
+	}
+
+	private OnClickListener buildAnswerButtonClickListener(final String letter) {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				sendMessage(EventFactory.buildAnswerEvent(letter));
+				Button answerButton1 = (Button) findViewById(R.id.buttonA);
+				Button answerButton2 = (Button) findViewById(R.id.buttonB);
+				Button answerButton3 = (Button) findViewById(R.id.buttonC);
+				
+				answerButton1.setEnabled(false);
+				answerButton2.setEnabled(false);
+				answerButton3.setEnabled(false);
+			}
+		};
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -265,7 +309,7 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 
-	private void sendMessage(Command cmd) {
+	private void sendMessage(Message msg) {
 		if (mSelectedDevice == null || mApiClient == null || (mApiClient != null && !mApiClient.isConnected())) {
 			if (mApiClient != null && mApiClient.isConnecting()) {
 				Toast.makeText(MainActivity.this,
@@ -281,8 +325,8 @@ public class MainActivity extends ActionBarActivity {
 		}
 		try {
 			JSONObject obj = new JSONObject();
-			obj.put("id", cmd.getId());
-			obj.put("params", new JSONObject(cmd.getParams()));
+			obj.put("id", msg.getId());
+			obj.put("params", new JSONObject(msg.getParams()));
 
 			if (mApiClient != null && mChromeQuizChannel != null) {
 				try {
@@ -321,6 +365,28 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	public void setIsGameMaster(boolean isGameMaster) {
 		this.isGameMaster = isGameMaster;
+	}
+
+	public void showQuestion(Question question) {
+		TextView questionView = (TextView) findViewById(R.id.question);
+		questionView.setText(question.getQuestion());
+		
+		TextView answer1 = (TextView) findViewById(R.id.answer1);
+		answer1.setText(question.getOption("A").getAnswer());
+		
+		TextView answer2 = (TextView) findViewById(R.id.answer2);
+		answer2.setText(question.getOption("B").getAnswer());
+		
+		TextView answer3 = (TextView) findViewById(R.id.answer3);
+		answer3.setText(question.getOption("C").getAnswer());
+		
+		Button answerButton1 = (Button) findViewById(R.id.buttonA);
+		Button answerButton2 = (Button) findViewById(R.id.buttonB);
+		Button answerButton3 = (Button) findViewById(R.id.buttonC);
+		
+		answerButton1.setEnabled(true);
+		answerButton2.setEnabled(true);
+		answerButton3.setEnabled(true);
 	}
 
 }

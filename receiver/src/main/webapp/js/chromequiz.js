@@ -84,7 +84,7 @@ var chromequiz = new function() {
     this.sendQuestion = function(question) {
         var rsp = {
             "type":"event",
-            "eventId":"QUESTION",
+            "eventId":"EVENT_QUESTION",
             "question": question
         };
         chromequiz.sendEvent(JSON.stringify(rsp));
@@ -93,7 +93,7 @@ var chromequiz = new function() {
 	this.sendGameStarting = function() {
         var rsp = {
             "type":"event",
-            "eventId":"GAME_START"
+            "eventId":"EVENT_GAME_START"
         };
         chromequiz.sendEvent(JSON.stringify(rsp));
     };
@@ -101,7 +101,7 @@ var chromequiz = new function() {
 	this.sendGameEnded = function() {
         var rsp = {
             "type":"event",
-            "eventId":"GAME_END"
+            "eventId":"EVENT_GAME_END"
         };
         chromequiz.sendEvent(JSON.stringify(rsp));
     };

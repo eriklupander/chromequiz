@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="128dp"
-            android:text="A"
+            android:text="@string/letterA"
             android:textSize="64dp" />
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="128dp"
-            android:text="B"
+            android:text="@string/letterB"
             android:textSize="64dp" />
 
         <TextView
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="128dp"
-            android:text="C"
+            android:text="@string/letterC"
             android:textSize="64dp" />
 
         <TextView

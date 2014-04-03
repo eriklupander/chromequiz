@@ -8,5 +8,7 @@ public interface ChannelDef {
 	public static final String EVENT_ID = "eventId";
 	public static final String RESPONSE_ID = "responseId";
 	
+	public static final String PRM_ANSWER = "answer";
+	
 	
 }

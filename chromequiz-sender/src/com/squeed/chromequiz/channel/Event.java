@@ -2,18 +2,14 @@ package com.squeed.chromequiz.channel;
 
 import java.util.HashMap;
 
-public class Command implements Message {
-
+public class Event implements Message {
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	
 	private String id;
 	private HashMap<String,String> params = new HashMap<String, String>();
-	
-	public Command() {} // no-args for serialization, if necessary...for now.
-	
-	public Command(String id) {
-		this.id = id;		
-	}
 	
 	public String getId() {
 		return id;
@@ -31,5 +27,4 @@ public class Command implements Message {
 	public void addParameter(String key, String value) {
 		params.put(key, value);
 	}
-
 }

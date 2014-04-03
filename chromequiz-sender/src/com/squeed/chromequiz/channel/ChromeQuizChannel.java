@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.android.gms.cast.Cast.MessageReceivedCallback;
 import com.google.android.gms.cast.CastDevice;
 import com.squeed.chromequiz.MainActivity;
+import com.squeed.chromequiz.model.Question;
 
 public class ChromeQuizChannel implements MessageReceivedCallback {
 	
@@ -53,6 +54,9 @@ public class ChromeQuizChannel implements MessageReceivedCallback {
 				case EVENT_GAME_MASTER_FALSE:
 					activity.setIsGameMaster(false);
 					break;
+				case EVENT_QUESTION:
+					activity.showQuestion(buildQuestion(msg.get("question")));
+					break;
 				default:
 					break;
 				}
@@ -70,5 +74,10 @@ public class ChromeQuizChannel implements MessageReceivedCallback {
 			Log.e(TAG, e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	private Question buildQuestion(Object object) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
