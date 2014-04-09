@@ -16,7 +16,10 @@ var chromequiz = new function() {
 	castReceiverManager.onSenderConnected = function (event) {
 		console.log('Received Sender Connected event: ' + event.data);
 		console.log(window.castReceiverManager.getSender(event.data).userAgent);
-	};
+	    chromequiz.displayText('A new Player has connected!');
+        game.addParticipant(event.data);
+        chromequiz.sendNameRequest(event.data);
+    };
 
 	// handler for 'senderdisconnected' event
 	castReceiverManager.onSenderDisconnected = function (event) {
@@ -45,13 +48,15 @@ var chromequiz = new function() {
 
         var command = cmd.parse(event.data);
         switch(command.id) {
-            case "ANSWER":
+            case "EVENT_ANSWER":
                 game.addAnswer(senderId, command.prm.answer);
                 break;
-            case "START_GAME":
+            case "EVENT_START_GAME":
                 game.startGame();
                 break;
-            
+            case "EVENT_NAME_REQUEST_RESPONSE":
+                game.addParticipantName(command.prm.castId, command.prm.name);
+                break;
             default:
                 chromequiz.displayText("Unknown or unparsable command: " + event.data);
                 break;
@@ -105,4 +110,22 @@ var chromequiz = new function() {
         };
         chromequiz.sendEvent(JSON.stringify(rsp));
     };
+
+    this.sendNameRequest = function(castId) {
+        var cmd = {
+            "type":"command",
+            "commandId":"COMMAND_NAME_REQUEST",
+            "castId" : castId
+        };
+        chromequiz.sendEvent(JSON.stringify(cmd));
+    }
+
+    this.sendIsMasterEvent = function(castId) {
+        var cmd = {
+            "type":"command",
+            "commandId":"COMMAND_SET_MASTER",
+            "castId" : castId
+        };
+        chromequiz.sendEvent(JSON.stringify(cmd));
+    }
 };

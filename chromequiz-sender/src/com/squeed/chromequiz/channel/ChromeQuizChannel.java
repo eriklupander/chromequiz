@@ -57,6 +57,9 @@ public class ChromeQuizChannel implements MessageReceivedCallback {
 				case EVENT_QUESTION:
 					activity.showQuestion(buildQuestion(msg.get("question")));
 					break;
+				case EVENT_GAME_STARTED:
+					activity.updateGuiForGameStarted();
+					break;
 				default:
 					break;
 				}
@@ -68,8 +71,19 @@ public class ChromeQuizChannel implements MessageReceivedCallback {
 					default:
 						break;					
 				}
+			} else if(msgType.equalsIgnoreCase(ChannelDef.COMMAND_TYPE)) {
+				CommandDef cmdDef = CommandDef.valueOf(msg.getString(ChannelDef.COMMAND_ID));
+				switch(cmdDef) {
+				case COMMAND_NAME_REQUEST:
+					activity.sendNameResponse(msg.getString(ChannelDef.PRM_CAST_ID));
+					break;
+				case COMMAND_SET_IS_MASTER:
+					activity.setIsGameMaster(msg.getString(ChannelDef.PRM_CAST_ID));
+					break;
+				default:
+					break;					
+				}
 			}
-			
 		} catch (JSONException e) {
 			Log.e(TAG, e.getMessage());
 			e.printStackTrace();

@@ -30,7 +30,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squeed.chromequiz.channel.ChromeQuizChannel;
-import com.squeed.chromequiz.channel.Command;
+import com.squeed.chromequiz.channel.CommandFactory;
 import com.squeed.chromequiz.channel.EventFactory;
 import com.squeed.chromequiz.channel.Message;
 import com.squeed.chromequiz.model.Question;
@@ -68,14 +68,12 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	private void initAnswerButtons() {
-		Button button1 = (Button) findViewById(R.id.answer1);
-		button1.setOnClickListener(buildAnswerButtonClickListener("A"));
-		
-		Button button2 = (Button) findViewById(R.id.answer2);
-		button2.setOnClickListener(buildAnswerButtonClickListener("B"));
-		
-		Button button3 = (Button) findViewById(R.id.answer3);
-		button3.setOnClickListener(buildAnswerButtonClickListener("C"));
+//		TextView answer1 = (TextView) findViewById(R.id.answer1);
+//		
+//		
+//		TextView answer2 = (TextView) findViewById(R.id.answer2);
+//		
+//		TextView answer3 = (TextView) findViewById(R.id.answer3);
 		
 		Button answerButton1 = (Button) findViewById(R.id.buttonA);
 		Button answerButton2 = (Button) findViewById(R.id.buttonB);
@@ -84,6 +82,22 @@ public class MainActivity extends ActionBarActivity {
 		answerButton1.setEnabled(false);
 		answerButton2.setEnabled(false);
 		answerButton3.setEnabled(false);
+		
+		answerButton1.setOnClickListener(buildAnswerButtonClickListener("A"));
+		answerButton2.setOnClickListener(buildAnswerButtonClickListener("B"));
+		answerButton3.setOnClickListener(buildAnswerButtonClickListener("C"));
+		
+		
+		Button startGameBtn = (Button) findViewById(R.id.startGameBtn);
+		startGameBtn.setEnabled(false);
+		startGameBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				sendMessage(EventFactory.buildStartGameEvent());
+				updateGuiForGameStarted();
+			}
+		});
 	}
 
 	private OnClickListener buildAnswerButtonClickListener(final String letter) {
@@ -365,6 +379,8 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	public void setIsGameMaster(boolean isGameMaster) {
 		this.isGameMaster = isGameMaster;
+		
+		// TODO Update GUI, make "start game" button visible.
 	}
 
 	public void showQuestion(Question question) {
@@ -387,6 +403,21 @@ public class MainActivity extends ActionBarActivity {
 		answerButton1.setEnabled(true);
 		answerButton2.setEnabled(true);
 		answerButton3.setEnabled(true);
+	}
+
+	public void sendNameResponse(String castId) {
+		sendMessage(EventFactory.buildNameResponseEvent(castId, android.os.Build.MODEL));
+		
+	}
+
+	public void setIsGameMaster(String castId) {
+		setIsGameMaster(true);		
+	}
+
+	public void updateGuiForGameStarted() {
+		// Show answer buttons, hide splash / waiting for players etc.
+		View gamingView = findViewById(R.id.linearLayout1);
+		gamingView.setVisibility(View.VISIBLE);
 	}
 
 }

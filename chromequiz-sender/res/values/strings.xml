@@ -8,5 +8,6 @@
     <string name="letterA">A</string>
     <string name="letterB">B</string>
     <string name="letterC">C</string>
+    <string name="startGame">Start game</string>
 
 </resources>

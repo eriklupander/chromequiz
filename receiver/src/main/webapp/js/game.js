@@ -51,12 +51,37 @@ var game = new function() {
             game.displayAnswer(questions[currentQuestionIndex-1]);
         }
 	}
-	
-	this.addParticipant = function(name) {
-		var participant= {"name":name,"score":0};
+
+    /**
+     * Registers a sender ID as a new participant
+     * @param castId
+     */
+	this.addParticipant = function(castId) {
+		var participant= {"castId":castId, "name":"Unknown","score":0};
 		participants.push(participant);
 		game.updateParticipantList();
+
+        if(participants.length == 1) {
+            participants[0].isMaster = true;
+            chromequiz.sendIsMasterEvent(castId);
+        }
 	}
+
+    /**
+     * Associates a human-readable name to a castId.
+     * @param castId
+     * @param name
+     */
+    this.addParticipantName = function(castId, name) {
+        var index = -1;
+        for(var a=0;a < participants.length;a++) {
+            var existingParticipant = participants[a];
+            if(existingParticipant.castId == castId) {
+                existingParticipant.name = name;
+                break;
+            }
+        }
+    }
 	
 	this.removeParticipant = function(name) {
 		var index = -1;
