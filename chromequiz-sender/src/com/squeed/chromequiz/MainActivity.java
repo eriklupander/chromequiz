@@ -30,7 +30,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squeed.chromequiz.channel.ChromeQuizChannel;
-import com.squeed.chromequiz.channel.CommandFactory;
 import com.squeed.chromequiz.channel.EventFactory;
 import com.squeed.chromequiz.channel.Message;
 import com.squeed.chromequiz.model.Question;
@@ -75,14 +74,11 @@ public class MainActivity extends ActionBarActivity {
 //		
 //		TextView answer3 = (TextView) findViewById(R.id.answer3);
 		
+		updateButtonState(false);
+		
 		Button answerButton1 = (Button) findViewById(R.id.buttonA);
 		Button answerButton2 = (Button) findViewById(R.id.buttonB);
 		Button answerButton3 = (Button) findViewById(R.id.buttonC);
-		
-		answerButton1.setEnabled(false);
-		answerButton2.setEnabled(false);
-		answerButton3.setEnabled(false);
-		
 		answerButton1.setOnClickListener(buildAnswerButtonClickListener("A"));
 		answerButton2.setOnClickListener(buildAnswerButtonClickListener("B"));
 		answerButton3.setOnClickListener(buildAnswerButtonClickListener("C"));
@@ -106,13 +102,7 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				sendMessage(EventFactory.buildAnswerEvent(letter));
-				Button answerButton1 = (Button) findViewById(R.id.buttonA);
-				Button answerButton2 = (Button) findViewById(R.id.buttonB);
-				Button answerButton3 = (Button) findViewById(R.id.buttonC);
-				
-				answerButton1.setEnabled(false);
-				answerButton2.setEnabled(false);
-				answerButton3.setEnabled(false);
+				updateButtonState(false);
 			}
 		};
 	}
@@ -396,13 +386,7 @@ public class MainActivity extends ActionBarActivity {
 		TextView answer3 = (TextView) findViewById(R.id.answer3);
 		answer3.setText(question.getOption("C").getAnswer());
 		
-		Button answerButton1 = (Button) findViewById(R.id.buttonA);
-		Button answerButton2 = (Button) findViewById(R.id.buttonB);
-		Button answerButton3 = (Button) findViewById(R.id.buttonC);
-		
-		answerButton1.setEnabled(true);
-		answerButton2.setEnabled(true);
-		answerButton3.setEnabled(true);
+		updateButtonState(true);
 	}
 
 	public void sendNameResponse(String castId) {
@@ -416,8 +400,25 @@ public class MainActivity extends ActionBarActivity {
 
 	public void updateGuiForGameStarted() {
 		// Show answer buttons, hide splash / waiting for players etc.
-		View gamingView = findViewById(R.id.linearLayout1);
+		View gamingView = findViewById(R.id.gameLayout);
 		gamingView.setVisibility(View.VISIBLE);
+		View preGameView = findViewById(R.id.preGameLayout);
+		preGameView.setVisibility(View.GONE);
+	}
+
+	public void timeoutCurrentQuestion() {
+		updateButtonState(false);
+		Toast.makeText(this, "Time's up!", Toast.LENGTH_SHORT).show();
+	}
+
+	private void updateButtonState(boolean enabled) {
+		Button answerButton1 = (Button) findViewById(R.id.buttonA);
+		Button answerButton2 = (Button) findViewById(R.id.buttonB);
+		Button answerButton3 = (Button) findViewById(R.id.buttonC);
+		
+		answerButton1.setEnabled(enabled);
+		answerButton2.setEnabled(enabled);
+		answerButton3.setEnabled(enabled);
 	}
 
 }

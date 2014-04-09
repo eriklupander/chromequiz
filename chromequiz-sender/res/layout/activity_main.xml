@@ -9,7 +9,7 @@
     tools:context=".MainActivity" >
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/gameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -17,8 +17,16 @@
         android:layout_centerHorizontal="true"
         android:gravity="center|top"
         android:orientation="vertical"
-        android:padding="20dp" 
-        android:visibility="gone">
+        android:padding="20dp"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question..."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="italic" />
 
         <Button
             android:id="@+id/buttonA"
@@ -69,21 +77,50 @@
             android:textStyle="italic" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/question"
+    <RelativeLayout
+        android:id="@+id/preGameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/linearLayout1"
-        android:layout_centerHorizontal="true"
-        android:text="Question..."
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="italic" />
+        android:layout_centerHorizontal="true" >
 
-    <Button
-        android:id="@+id/startGameBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/startGame" />
+        <Button
+            android:id="@+id/startGameBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:text="@string/startGame" />
+
+        <TextView
+            android:id="@+id/waitingForStartText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Waiting for game to start"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/startGameBtn"
+            android:layout_below="@+id/textView1"
+            android:layout_centerHorizontal="true" >
+
+        </ListView>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/waitingForStartText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="23dp"
+            android:text="Player list"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

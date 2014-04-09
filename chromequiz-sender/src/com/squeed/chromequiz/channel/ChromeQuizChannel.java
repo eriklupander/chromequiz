@@ -60,6 +60,9 @@ public class ChromeQuizChannel implements MessageReceivedCallback {
 				case EVENT_GAME_STARTED:
 					activity.updateGuiForGameStarted();
 					break;
+				case EVENT_QUESTION_TIMEOUT:
+					activity.timeoutCurrentQuestion();
+					break;
 				default:
 					break;
 				}

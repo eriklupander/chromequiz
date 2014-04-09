@@ -94,6 +94,14 @@ var chromequiz = new function() {
         };
         chromequiz.sendEvent(JSON.stringify(rsp));
     };
+
+    this.sendQuestionTimedOut = function() {
+        var evt = {
+            "type":"event",
+            "eventId":"EVENT_QUESTION_TIMEOUT"
+        };
+        chromequiz.sendEvent(JSON.stringify(evt));
+    };
 	
 	this.sendGameStarting = function() {
         var rsp = {
